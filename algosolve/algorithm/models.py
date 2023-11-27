@@ -50,7 +50,6 @@ class Algorithm(BaseModel):
     theory = models.TextField(verbose_name='Принцип работы', max_length=10000)
     realization = models.TextField(verbose_name='Реализация', max_length=10000)
     example = models.TextField(verbose_name='Пример работы', max_length=10000)
-    url = models.URLField('Ссылка')
 
     class Meta:
         verbose_name = 'алгоритм'
@@ -68,8 +67,8 @@ class ImageAlgorithm(BaseModel):
     image = models.ImageField('Фото', blank=True, upload_to='algorithm_images')
 
     class Meta:
-        verbose_name = 'фотография'
-        verbose_name_plural = 'Фотографии'
+        verbose_name = 'фотография для алгоритма'
+        verbose_name_plural = 'Фотографии для алгоритмов'
 
     def __str__(self):
         return self.algorithm.title
@@ -83,11 +82,43 @@ class ImageCategory(BaseModel):
     image = models.ImageField('Фото', blank=True, upload_to='category_images')
 
     class Meta:
-        verbose_name = 'фотография'
-        verbose_name_plural = 'Фотографии'
+        verbose_name = 'фотография для категории'
+        verbose_name_plural = 'Фотографии для категорий'
 
     def __str__(self):
         return self.category.title
+
+
+class UrlAlgorithm(BaseModel):
+    title = models.CharField(verbose_name='Название', max_length=256)
+    algorithm = models.ForeignKey(
+        Algorithm,
+        on_delete=models.CASCADE
+    )
+    url = models.URLField(verbose_name='Ссылка', blank=True)
+
+    class Meta:
+        verbose_name = 'ссылка для алгоритма'
+        verbose_name_plural = 'ссылки для алгоритмов'
+
+    def __str__(self):
+        return self.title
+
+
+class UrlCategory(BaseModel):
+    title = models.CharField(verbose_name='Название', max_length=256)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE
+    )
+    url = models.URLField(verbose_name='Ссылка')
+
+    class Meta:
+        verbose_name = 'ссылка для категории'
+        verbose_name_plural = 'ссылки для категорий'
+
+    def __str__(self):
+        return self.title
 
 
 class Comment(BaseModel):

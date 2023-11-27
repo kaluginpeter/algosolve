@@ -7,4 +7,7 @@ app_name = 'algorithm'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path(
+        'algorithms/categories/',
+        views.CategoryListView.as_view(), name='categories'),
 ]
