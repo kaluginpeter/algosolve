@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from http import HTTPStatus
 
@@ -22,3 +23,11 @@ def server_error(request):
         request,
         'pages/500.html',
         status=HTTPStatus.INTERNAL_SERVER_ERROR.value)
+
+
+class PagesAboutViews(TemplateView):
+    template_name = 'pages/about.html'
+
+
+class PagesRulesViews(TemplateView):
+    template_name = 'pages/rules.html'

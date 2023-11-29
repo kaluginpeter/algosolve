@@ -74,6 +74,21 @@ class ImageAlgorithm(BaseModel):
         return self.algorithm.title
 
 
+class TaskAlgorithm(models.Model):
+    text = models.TextField(verbose_name='Описание задачи')
+    algorithm = models.ForeignKey(
+        Algorithm,
+        on_delete=models.CASCADE
+    )
+
+    class Meta:
+        verbose_name = 'задача для алгоритма'
+        verbose_name_plural = 'задачи для алгоритмов'
+
+    def __str__(self):
+        return self.algorithm.title
+
+
 class ImageCategory(BaseModel):
     category = models.ForeignKey(
         Category,
