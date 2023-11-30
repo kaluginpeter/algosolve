@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}
+  Type of Algorithms
+{% endblock %}
+{% block content %}
+  {% for category in category_obj %}
+    <article class="mb-5">  
+      {% include "includes/post_card.html" %}
+    </article>   
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+{% endblock %}

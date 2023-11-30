@@ -26,6 +26,14 @@ class CategoryListView(BaseView, ListView):
     def get_queryset(self):
         qs = self.model.objects.filter(is_published=True)
         return qs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        context['category_obj'] = self.model.objects.filter(is_published=True)
+        return context
+
+
+class CategoryDetailView(ListView):
+    model = Category
 
 
 class UserProfileListView(ListView):

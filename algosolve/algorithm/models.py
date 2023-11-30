@@ -92,7 +92,8 @@ class TaskAlgorithm(models.Model):
 class ImageCategory(BaseModel):
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='images',
     )
     image = models.ImageField('Фото', blank=True, upload_to='category_images')
 
@@ -124,7 +125,8 @@ class UrlCategory(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='urls',
     )
     url = models.URLField(verbose_name='Ссылка')
 

@@ -13,6 +13,9 @@ urlpatterns = [
     path(
         'algorithms/categories/',
         views.CategoryListView.as_view(), name='categories'),
+    path(
+        'algorithms/categories/category_detail/<slug:categpry/',
+        views.CategoryDetailView.as_view(), name='category_detail'),
     path( 
         'edit_profile/', views.UserChangeProfileView.as_view(),
         name='edit_profile'),
