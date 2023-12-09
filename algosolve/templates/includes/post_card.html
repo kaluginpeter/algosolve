@@ -10,7 +10,7 @@
             {% endif %}
           </small>
         </h6>
-        <p class="card-text">{{ category.description|truncatewords:10 }}</p>
+        <p class="card-text">{{ category.description|truncatewords:10|safe }}</p>
         <a href="{% url 'algorithm:category_detail' category.slug %}" class="card-link">Читать полный текст</a>
       {% elif '/category_detail/' in request.path %}
         <h5 class="card-title">{{ algorithm.title }}</h5>
