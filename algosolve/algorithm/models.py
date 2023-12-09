@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from pytils.translit import slugify
+
 
 User = get_user_model()
 
@@ -25,6 +27,7 @@ class Category(BaseModel):
     description = models.TextField(verbose_name='Описание', max_length=10000)
     slug = models.SlugField(
         unique=True,
+        blank=True,
         verbose_name='Идентификатор',
         help_text=('Идентификатор страницы для URL; '
                    'разрешены символы латиницы, цифры, дефис и подчёркивание.')
@@ -37,6 +40,13 @@ class Category(BaseModel):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            max_slug_length = self._meta.get_field('slug').max_length
+            self.slug = slugify(self.title)[:max_slug_length]
+        super().save(*args, **kwargs)
+
 
 
 class Algorithm(BaseModel):

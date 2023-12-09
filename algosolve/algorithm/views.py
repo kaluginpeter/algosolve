@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse
@@ -12,7 +13,8 @@ POSTS_PER_PAGE = 10
 
 
 def index(request):
-    return HttpResponse('Hello World!')
+    template = 'algorithm/index.html'
+    return render(request, template)
 
 
 class BaseView:
@@ -24,16 +26,25 @@ class CategoryListView(BaseView, ListView):
     template_name = 'algorithm/categories.html'
 
     def get_queryset(self):
-        qs = self.model.objects.filter(is_published=True)
-        return qs
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) 
-        context['category_obj'] = self.model.objects.filter(is_published=True)
-        return context
+        qs = super().get_queryset()
+        return qs.filter(is_published=True)
+
 
 
 class CategoryDetailView(ListView):
-    model = Category
+    model = Algorithm
+    template_name = 'algorithm/category.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(category__slug=self.kwargs['category'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = get_object_or_404(Category, slug=self.kwargs['category'])
+        context['urls'] = get_object_or_404(Category, slug=self.kwargs['category']).urls.all()
+        context['images'] = get_object_or_404(Category, slug=self.kwargs['category']).images.all()
+        return context
 
 
 class UserProfileListView(ListView):

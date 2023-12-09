@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 {% block title %}
-  Публикации в категории {{ category.title }}
+  Алгоритмы в категории {{ category.title }}
 {% endblock %}
 {% block content %}
-  <h1 class="text-center">Публикации в категории - {{ category.title }}</h1>
+  {% for image in images %}
+    <a href="{{ image.url }}" target="_blank">
+      <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ image.url }}">
+    </a>
+  {% endfor %}
+  {% for url in urls %}
+    <a href="{{ url.url }}" target="_blank">
+      <url class="border-3 rounded url-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ url.title }}">
+    </a>
+{% endfor %}
+  <h1 class="text-center">Алгоритмы в категории - {{ category.title }}</h1>
   <p class="col-6 offset-3 mb-5 lead text-center">{{ category.description }}</p>
-  {% for post in page_obj %}
+  {% for algorithm in object_list %}
     <article class="mb-5">  
       {% include "includes/post_card.html" %}
     </article>   

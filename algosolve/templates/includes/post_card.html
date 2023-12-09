@@ -1,21 +1,29 @@
 <div class="col d-flex justify-content-center">
   <div class="card" style="width: 40rem;">
     <div class="card-body">
-      {% if category.image %}
-        <a href="{{ post.image.url }}" target="_blank">
-          <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ post.image.url }}">
-        </a>
+      {% if '/algorithms/categories/' in request.path %}
+        <h5 class="card-title">{{ category.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not category.is_published %}
+              <p class="text-danger">Категория снят с публикации админом</p>
+            {% endif %}
+          </small>
+        </h6>
+        <p class="card-text">{{ category.description|truncatewords:10 }}</p>
+        <a href="{% url 'algorithm:category_detail' category.slug %}" class="card-link">Читать полный текст</a>
+      {% elif '/category_detail/' in request.path %}
+        <h5 class="card-title">{{ algorithm.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not algorithm.is_published %}
+              <p class="text-danger">Алгоритм снят с публикации админом</p>
+            {% endif %}
+          </small>
+        </h6>
+        <p class="card-text">{{ algorithm.description|truncatewords:10 }}</p>
+        <a href="#" class="card-link">Читать полный текст</a>
       {% endif %}
-      <h5 class="card-title">{{ category.title }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">
-        <small>
-          {% if not category.is_published %}
-            <p class="text-danger">Пост снят с публикации админом</p>
-          {% endif %}
-        </small>
-      </h6>
-      <p class="card-text">{{ category.description|truncatewords:10 }}</p>
-      <a href="{% url 'algorithm:category_detail' category.slug %}" class="card-link">Читать полный текст</a>
     </div>
   </div>
 </div>
