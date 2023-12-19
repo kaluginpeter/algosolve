@@ -1,0 +1,90 @@
+{% load simple_components %}
+{% #set_component "card" %}
+        <div class="card-body">
+            {% set_slot "title_url" %}
+            <p>{{ description }}</p>
+        </div>
+{% /set_component %}
+<div class="card-list">
+    <div class="card text-bg-dark mb-3" style="max-width: 72rem;">
+        <div class="card-header">Начало</div>
+        <h5 class="card-title">Основные алгоритмы</h5>
+        <div class="card-body">
+          <p class="card-title">Сортировка и Поиск</p>
+          {% #component "card" description="Основана на сравнении и обмене соседних элементов." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Пузырьковая сортировка</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="На каждом шаге выбирается минимальный элемент и меняется местами с текущим." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Сортировка выбором</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          {% #component "card" description="Элементы поочерёдно выбираются из неотсортированной части массива и вставляются в отсортированную часть." %}
+          {% @slot "title_url" %}
+            <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Сортировка вставками</a>
+            </h3>
+          {% /slot%}
+        {% /component %}
+        {% #component "card" description="Применяет стратегию 'разделяй и властвуй', разбивая массив на подмассивы, сортируя их, а затем объединяя." %}
+        {% @slot "title_url" %}
+          <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Сортировка слиянием</a>
+          </h3>
+        {% /slot%}
+      {% /component %}
+      {% #component "card" description="Основана на стратегии 'разделяй и властвуй', использует случайный выбор опорного элемента." %}
+        {% @slot "title_url" %}
+          <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Быстрая сортировка</a>
+          </h3>
+        {% /slot%}
+      {% /component %}
+      <p class="card-title">Алгоритмы Поиска</p>
+          {% #component "card" description="Простой метод, последовательно проверяющий каждый элемент." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Линейный поиск</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Применяется к упорядоченным спискам, последовательно деля список пополам." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Бинарный поиск</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          <p class="card-title">Работа с Графами</p>
+          {% #component "card" description="Применение алгоритмов для обхода и поиска в графах." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Поиск в глубину</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Применение алгоритмов для обхода и поиска в графах." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Поиск в ширину</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          {% #component "card" description="Применение алгоритмов, таких как алгоритм Дейкстры, для нахождения кратчайших путей." %}
+          {% @slot "title_url" %}
+            <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Кратчайший путь</a>
+            </h3>
+          {% /slot%}
+        {% /component %}
+        <p class="card-title">Применение в Программировании</p>
+          {% #component "card" description="Интеграция алгоритмов в структуры данных для оптимизации работы приложений." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритмы в структурах данных</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Выбор эффективных алгоритмов для оптимизации работы программы." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Оптимизация времени и памяти</a>
+              </h3>
+            {% /slot%}
+          {% /component %}      
+        </div>
+</div>

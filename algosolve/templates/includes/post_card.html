@@ -21,9 +21,31 @@
             {% endif %}
           </small>
         </h6>
-        <p class="card-text">{{ algorithm.description|truncatewords:10 }}</p>
-        <a href="#" class="card-link">Читать полный текст</a>
-      {% endif %}
+        <p class="card-text">{{ algorithm.description|truncatewords:10|safe }}</p>
+        <a href="{% url 'algorithm:algorithm_detail' category.slug algorithm.slug %}" class="card-link">Читать полный текст</a>
+      {% elif '/data_structures/categories/' in request.path %}
+        <h5 class="card-title">{{ category.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not category.is_published %}
+              <p class="text-danger">Категория структуры данных снята с публикации админом</p>
+            {% endif %}
+          </small>
+        </h6>
+        <p class="card-text">{{ category.description|truncatewords:10|safe }}</p>
+        <a href="{% url 'data_structure:category_detail' category.slug %}" class="card-link">Читать полный текст</a>
+      {% elif '/category_structure_detail/' in request.path %}
+        <h5 class="card-title">{{ data_structure.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <small>
+            {% if not data_structure.is_published %}
+              <p class="text-danger">Структура Данных снят с публикации админом</p>
+            {% endif %}
+          </small>
+        </h6>
+        <p class="card-text">{{ data_structure.description|truncatewords:10|safe }}</p>
+        <a href="{% url 'data_structure:data_structure_detail' category.slug data_structure.slug %}" class="card-link">Читать полный текст</a>
+        {% endif %}
     </div>
   </div>
 </div>

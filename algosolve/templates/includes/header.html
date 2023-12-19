@@ -14,6 +14,11 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link {% if view_name == 'data_structure:categories' %} text-white {% endif %}" href="{% url 'data_structure:categories' %}">
+              Структуры Данных
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link {% if view_name == 'pages:about' %} text-white {% endif %}" href="{% url 'pages:about' %}">
               О проекте
             </a>
@@ -24,7 +29,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link {% if view_name == 'algorithm:roadmap' %} text-white {% endif %}" href="{% url 'algorithm:roadmap' %}">
               Roadmap
             </a>
           </li>

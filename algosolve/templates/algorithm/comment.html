@@ -21,9 +21,22 @@
         <div class="card-body">
           <form method="post"
             {% if '/edit_comment/' in request.path %}
-              action="{% url 'blog:edit_comment' comment.post_id comment.id %}"
+              action="{% url 'algorithm:edit_comment' comment.algorithm.category.slug comment.algorithm.slug comment.id %}#comments_an"
             {% endif %}>
             {% csrf_token %}
+            {% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    <strong>Ошибка!</strong> Ваша форма содержит ошибки:
+    <ul>
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          <li>{{ field }}: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
             {% if not '/delete_comment/' in request.path %}
               {% bootstrap_form form %}
             {% else %}

@@ -7,6 +7,7 @@ from . import settings
 
 urlpatterns = [
     path('', include('algorithm.urls')),
+    path('data_structures/', include('structure.urls')),
     path('admin/', admin.site.urls),
     path('auth/', include('django.contrib.auth.urls')),
     path('auth/registration/', CreateView.as_view(
@@ -15,7 +16,10 @@ urlpatterns = [
         success_url=reverse_lazy('algorithm:index')),
         name='registration'),
     path('pages/', include('pages.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'pages.views.page_not_found'
 

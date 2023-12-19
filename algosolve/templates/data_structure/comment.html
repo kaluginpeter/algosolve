@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/edit_comment/' in request.path %}
+    Редактирование комментария
+  {% else %}
+    Удаление комментария
+  {% endif %}
+{% endblock %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <div class="col d-flex justify-content-center">
+      <div class="card" style="width: 40rem;">
+        <div class="card-header">
+          {% if '/edit_comment/' in request.path %}
+            Редактирование комментария
+          {% else %}
+            Удаление комментария
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <form method="post"
+            {% if '/edit_comment/' in request.path %}
+              action="{% url 'data_structure:edit_comment' comment.data_structure.category.slug comment.data_structure.slug comment.id %}#comments_an"
+            {% endif %}>
+            {% csrf_token %}
+            {% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    <strong>Ошибка!</strong> Ваша форма содержит ошибки:
+    <ul>
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          <li>{{ field }}: {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+            {% if not '/delete_comment/' in request.path %}
+              {% bootstrap_form form %}
+            {% else %}
+              <p>{{ comment.text }}</p>
+            {% endif %}
+            {% bootstrap_button button_type="submit" content="Отправить" %}
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

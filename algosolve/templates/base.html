@@ -10,6 +10,15 @@
     <link rel="icon" type="image/png" sizes="32x32" href="#">
     <link rel="icon" type="image/png" sizes="16x16" href="#">
     <link rel="stylesheet" href="{% static 'css/for_category_text.css' %}">
+    <link rel="stylesheet" href="{% static 'css/for_algorithm_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> 
+    </script> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-TzjwSA6wP4XLvKG0o9LknYrCDlB3g6R/KANLX/WGH3J7x9/DeP1Db8E1aTGp9L2M" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-yQ6oBoHFRM/rO9fEPhVwzVWvFa8EV0E5FRw6qBvXAZK7yoVTw9xOnsAUCc7h7sWK" crossorigin="anonymous"></script>
     <title>
       {% block title %}{% endblock %}
     </title>
@@ -23,5 +32,10 @@
       </div>
     </main>
     {% include "includes/footer.html" %}
+    <script>
+      var carousel = new bootstrap.Carousel(document.getElementById('carouselExample'), {
+        interval: false, // Чтобы карусель не автоматически переключалась
+      });
+    </script>
   </body>
 </html>

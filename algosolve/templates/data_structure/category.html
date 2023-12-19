@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+  Стуктуры Данных в категории {{ category.title }}
+{% endblock %}
+{% block content %}
+  {% for image in images %}
+    <a href="{{ image.url }}" target="_blank">
+      <img class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ image.url }}">
+    </a>
+  {% endfor %}
+  {% for url in urls %}
+    <a href="{{ url.url }}" target="_blank">
+      <url class="border-3 rounded url-fluid img-thumbnail mb-2 mx-auto d-block" src="{{ url.title }}">
+    </a>
+{% endfor %}
+  <h1 class="text-center">Категория - {{ category.title }}</h1>
+  <p class="col-12 offset-0 mb-3 lead text">{{ category.description|safe }}</p>
+  <h1 class="text-center">Стуктуры Данных</h1>
+  {% for data_structure in object_list %}
+    <article class="mb-5">  
+      {% include "includes/post_card.html" %}
+    </article>   
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+{% endblock %}

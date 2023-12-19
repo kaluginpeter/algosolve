@@ -60,6 +60,14 @@ class Algorithm(BaseModel):
     theory = models.TextField(verbose_name='Принцип работы', max_length=10000)
     realization = models.TextField(verbose_name='Реализация', max_length=10000)
     example = models.TextField(verbose_name='Пример работы', max_length=10000)
+    slug = models.SlugField(
+        unique=True,
+        blank=True,
+        verbose_name='Идентификатор',
+        help_text=('Идентификатор страницы для URL; '
+                   'разрешены символы латиницы, цифры, дефис и подчёркивание.')
+
+    )
 
     class Meta:
         verbose_name = 'алгоритм'
@@ -68,6 +76,12 @@ class Algorithm(BaseModel):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            max_slug_length = self._meta.get_field('slug').max_length
+            self.slug = slugify(self.title)[:max_slug_length]
+        super().save(*args, **kwargs)
+
 
 class ImageAlgorithm(BaseModel):
     algorithm = models.ForeignKey(
@@ -75,13 +89,15 @@ class ImageAlgorithm(BaseModel):
         on_delete=models.CASCADE
     )
     image = models.ImageField('Фото', blank=True, upload_to='algorithm_images')
+    caption = models.TextField('Описание', blank=True)
+    alt = models.CharField(max_length=255, blank=True)
 
     class Meta:
         verbose_name = 'фотография для алгоритма'
         verbose_name_plural = 'Фотографии для алгоритмов'
 
     def __str__(self):
-        return self.algorithm.title
+        return f'{self.alt} - {self.algorithm.title}'
 
 
 class TaskAlgorithm(models.Model):
@@ -96,7 +112,7 @@ class TaskAlgorithm(models.Model):
         verbose_name_plural = 'задачи для алгоритмов'
 
     def __str__(self):
-        return self.algorithm.title
+        return f'{self.algorithm.title} - {self.text[:30]}'
 
 
 class ImageCategory(BaseModel):
@@ -148,8 +164,8 @@ class UrlCategory(BaseModel):
         return self.title
 
 
-class Comment(BaseModel):
-    text = models.TextField(verbose_name='Комментарий', max_length=1000)
+class Comment(models.Model):
+    text = models.TextField(verbose_name='Комментарий')
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -158,8 +174,10 @@ class Comment(BaseModel):
     algorithm = models.ForeignKey(
         Algorithm,
         on_delete=models.CASCADE,
-        verbose_name='Алгоритм'
+        verbose_name='Алгоритм',
+        related_name='comments'
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'комментарий'

@@ -1,3 +1,9 @@
-<a class="text-muted" href="{% url 'blog:category_posts' post.category.slug %}">
-  {{ post.category.title }}
+{% if 'algorithm' in request.path %}
+<a class="text-muted" href="{% url 'algorithm:category_detail' algorithm.category.slug %}">
+  {{ algorithm.category.title }}
 </a>
+{% elif 'data_structure' in request.path %}
+  <a class="text-muted" href="{% url 'data_structure:category_detail' data_structure.category.slug %}">
+    {{ data_structure.category.title }}
+  </a>
+{% endif %}

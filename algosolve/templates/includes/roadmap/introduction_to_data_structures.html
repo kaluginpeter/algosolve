@@ -1,0 +1,74 @@
+{% load simple_components %}
+{% #set_component "card" %}
+        <div class="card-body">
+            {% set_slot "title_url" %}
+            <p>{{ description }}</p>
+        </div>
+{% /set_component %}
+<div class="card-list">
+    <div class="card text-bg-success mb-3" style="max-width: 72rem;">
+        <div class="card-header">Основы</div>
+        <div class="card-title">Введение в структуры данных</div>
+        <div class="card-body">
+            {% #component "card" description="Определение, принцип работы и основные операции с массивами" %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Массив (Array)</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Определение, принцип работы и основные операции со связным списком" %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Связанный список (Linked List)</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            <div class="card-title">Стеки и Очереди</div>
+            {% #component "card" description="Определение и базовые операции (push, pop). Реализация стека с использованием массива и связанного списка." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Стек (Stack)</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          {% #component "card" description="Определение и базовые операции (enqueue, dequeue). Реализация очереди с использованием массива и связанного списка." %}
+          {% @slot "title_url" %}
+            <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Очередь (Queue)</a>
+            </h3>
+          {% /slot%}
+        {% /component %}
+        <div class="card-title">Деревья</div>
+        {% #component "card" description="Определение и основные термины (корень, листья, уровни). Операции над бинарными деревьями (вставка, удаление, поиск)." %}
+        {% @slot "title_url" %}
+          <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Бинарные деревья</a>
+          </h3>
+        {% /slot%}
+      {% /component %}
+      {% #component "card" description="Определение и свойства. Бинарное дерево поиска (Binary Search Tree - BST) и его операции." %}
+      {% @slot "title_url" %}
+        <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Деревья поиска</a>
+        </h3>
+      {% /slot%}
+    {% /component %}
+    <div class="card-title">Хеш-таблицы</div>
+    {% #component "card" description="Как работают хеш-таблицы. Разрешение коллизий (методы цепочек, открытое хеширование). Создание простой хеш-таблицы и ее использование для хранения данных." %}
+    {% @slot "title_url" %}
+      <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Хеш таблицы</a>
+      </h3>
+    {% /slot%}
+  {% /component %}
+  <div class="card-title">Графы</div>
+  {% #component "card" description="Основные определения: Вершины и рёбра: Основные компоненты графов. Ориентированные и неориентированные графы. Типы графов: Двудольные графы, Взвешенные графы. Представление графов: Матрица смежности и списки смежности: Различные способы хранения графов в памяти." %}
+  {% @slot "title_url" %}
+    <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Графы</a>
+    </h3>
+  {% /slot%}
+{% /component %}
+<div class="card-title">Кучи (Heap)</div>
+{% #component "card" description="Определение и основные характеристики. Операции с кучей: Вставка и извлечение. Приложения куч: Приоритетные очереди: Использование куч для реализации структуры данных с высоким приоритетом. Бинарная куча: Реализация бинарной кучи и её основные свойства." %}
+{% @slot "title_url" %}
+  <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Кучи (Heap)</a>
+  </h3>
+{% /slot%}
+{% /component %}
+        </div>
+    </div>
+</div>

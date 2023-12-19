@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'structure',
     'pages',
     'django_bootstrap5',
+    'simple_components',
 ]
 
 MIDDLEWARE = [
@@ -36,8 +37,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'algosolve.urls'
-
-MEDIA_ROOT = BASE_DIR / 'media'
 
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
