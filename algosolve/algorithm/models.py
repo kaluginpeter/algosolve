@@ -146,6 +146,21 @@ class UrlAlgorithm(BaseModel):
     def __str__(self):
         return self.title
 
+class UrlTaskAlgorithm(BaseModel):
+    title = models.CharField(verbose_name='Название', max_length=256)
+    algorithm = models.ForeignKey(
+        Algorithm,
+        on_delete=models.CASCADE
+    )
+    url = models.URLField(verbose_name='Ссылка', blank=True)
+
+    class Meta:
+        verbose_name = 'ссылка на задачу для алгоритма'
+        verbose_name_plural = 'ссылки на задачу для алгоритмов'
+
+    def __str__(self):
+        return self.title
+
 
 class UrlCategory(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)

@@ -1,0 +1,73 @@
+{% load simple_components %}
+{% #set_component "card" %}
+        <div class="card-body">
+            {% set_slot "title_url" %}
+            <p>{{ description }}</p>
+        </div>
+{% /set_component %}
+<div class="card-list">
+    <div class="card text-bg-warning mb-3" style="max-width: 72rem;">
+        <div class="card-header">Продолжение</div>
+        <h5 class="card-title">Продвинутые алгоритмы</h5>
+        <div class="card-body">
+          <p class="card-title">Более сложные алгоритмы сортировки и поиска</p>
+          {% #component "card" description="Применяет стратегию 'разделяй и властвуй', разбивая массив на подмассивы, сортируя их, а затем объединяя." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Сортировка слиянием</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Основана на стратегии 'разделяй и властвуй', использует случайный выбор опорного элемента." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Быстрая сортировка</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          <p class="card-title">Работа с Графами</p>
+          {% #component "card" description="Применение алгоритмов для обхода и поиска в графах." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Поиск в глубину (DFS)</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Применение алгоритмов для обхода и поиска в графах." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Поиск в ширину (BFS)</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          {% #component "card" description="Применение алгоритма, для нахождения кратчайших путей." %}
+          {% @slot "title_url" %}
+            <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм Дейкстры</a>
+            </h3>
+          {% /slot%}
+        {% /component %}
+          {% #component "card" description="Алгоритм для поиска всех кратчайших путей" %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм Флойда-Уоршелла</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            <p class="card-title">Рекурсивные алгоритмы</p>
+            {% #component "card" description="Разбор понятия, принцип работы и примеры." %}
+                {% @slot "title_url" %}
+                  <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Рекурсивные алгоритмы</a>
+                  </h3>
+                {% /slot%}
+              {% /component %}
+              <p class="card-title">Жадные алгоритмы</p>
+              {% #component "card" description="Разбор понятия, принцип работы и примеры." %}
+                  {% @slot "title_url" %}
+                    <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Жадные алгоритмы</a>
+                    </h3>
+                  {% /slot%}
+                {% /component %}
+            <p class="card-title">Динамическое программирование</p>
+          {% #component "card" description="Решение задач методом 'сверху' (top-down approach) и 'снизу' (bottom-up approach)" %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Динамическое программирование</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+        </div>
+</div>

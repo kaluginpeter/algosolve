@@ -1,0 +1,53 @@
+{% load simple_components %}
+{% #set_component "card" %}
+        <div class="card-body">
+            {% set_slot "title_url" %}
+            <p>{{ description }}</p>
+        </div>
+{% /set_component %}
+<div class="card-list">
+    <div class="card text-bg-danger mb-3" style="max-width: 72rem;">
+        <div class="card-header">Углубление</div>
+        <h5 class="card-title">Сложные алгоритмы и структуры данных</h5>
+        <div class="card-body">
+          <p class="card-title">Продвинутые структуры данных</p>
+          {% #component "card" description="Теория и принцип работы." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Бинарные кучи</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Теория и принцип работы." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Кучи Фибоначчи</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+      <p class="card-title">Сложные алгоритмы на графах</p>
+          {% #component "card" description="Алгоритм поиска потока в сети" %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм Форда-Фалкерсона</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Для направленных ациклических графов " %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм топологической сортировки (DAG)</a>
+              </h3>
+            {% /slot%}
+          {% /component %}
+          <p class="card-title">Сложные алгоритмы поиска подстрок</p>
+          {% #component "card" description="Теория и принцип работы." %}
+              {% @slot "title_url" %}
+                <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм Кнута-Морриса-Пратта</a>
+                </h3>
+              {% /slot%}
+            {% /component %}
+            {% #component "card" description="Теория и принцип работы." %}
+            {% @slot "title_url" %}
+              <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Алгоритм Бойера-Мура</a>
+              </h3>
+            {% /slot%}
+          {% /component %} 
+        </div>
+</div>

@@ -7,6 +7,7 @@ from .models import (Category,
                      UrlAlgorithm,
                      UrlCategory,
                      TaskAlgorithm,
+                     UrlTaskAlgorithm,
                      Comment)
 
 admin.site.register(Category)
@@ -17,3 +18,4 @@ admin.site.register(UrlAlgorithm)
 admin.site.register(UrlCategory)
 admin.site.register(Comment)
 admin.site.register(TaskAlgorithm)
+admin.site.register(UrlTaskAlgorithm)

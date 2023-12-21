@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Category, Algorithm, User, ImageAlgorithm, UrlAlgorithm, Comment, TaskAlgorithm
+from .models import Category, Algorithm, User, ImageAlgorithm, UrlAlgorithm, Comment, TaskAlgorithm, UrlTaskAlgorithm
 from .forms import ChangeUserNameForm, CommentForm
 
 
@@ -65,6 +65,7 @@ class AlgorithmDetailView(DetailView):
         context['urls'] = UrlAlgorithm.objects.filter(algorithm=self.algorithm.pk)
         context['images'] = ImageAlgorithm.objects.filter(algorithm=self.algorithm.pk)
         context['tasks'] = TaskAlgorithm.objects.filter(algorithm=self.algorithm.pk)
+        context['online_tasks'] = UrlTaskAlgorithm.objects.filter(algorithm=self.algorithm.pk)
         context['form'] = CommentForm()
         context['comments'] = (
             self.object.comments.select_related('algorithm', 'author')

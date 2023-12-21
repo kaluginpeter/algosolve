@@ -29,18 +29,6 @@
             </h3>
           {% /slot%}
         {% /component %}
-        {% #component "card" description="Применяет стратегию 'разделяй и властвуй', разбивая массив на подмассивы, сортируя их, а затем объединяя." %}
-        {% @slot "title_url" %}
-          <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Сортировка слиянием</a>
-          </h3>
-        {% /slot%}
-      {% /component %}
-      {% #component "card" description="Основана на стратегии 'разделяй и властвуй', использует случайный выбор опорного элемента." %}
-        {% @slot "title_url" %}
-          <h3 class="card-text"><a class="link-secondary text-white text-decoration-none" href="{% url 'algorithm:roadmap' %}">Быстрая сортировка</a>
-          </h3>
-        {% /slot%}
-      {% /component %}
       <p class="card-title">Алгоритмы Поиска</p>
           {% #component "card" description="Простой метод, последовательно проверяющий каждый элемент." %}
               {% @slot "title_url" %}
