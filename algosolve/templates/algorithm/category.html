@@ -8,50 +8,53 @@
   
   <p class="col-12 offset-0 mb-3 lead text">{{ category.description|safe }}</p>
   <br>
-  <h2>Изображения структуры данных:</h2>
-<div class="container">
-  <div id="carouselExampleControls"
-    class="carousel slide"
-    data-ride="true">
-      <ul class="carousel-indicators" >
-        {% for image in images %}
-        <li data-target="#carouselExampleControls"  data-slide-to="{{ forloop.counter0 }}"
-        {% if not forloop.counter0 %}class="active"{% endif %}>
-        </li>
-        {% endfor %}             
-    </ul>
+  {% if images %}
+  <h2>Изображения категории алгоритма:</h2>
+  <div class="container">
+    <div id="carouselExampleControls"
+      class="carousel slide"
+      data-ride="carousel">
+        <ul class="carousel-indicators" >
+          {% for image in images %}
+          <li data-target="#carouselExampleControls"  data-slide-to="{{ forloop.counter0 }}"
+          {% if not forloop.counter0 %}class="active"{% endif %}>
+          </li>
+          {% endfor %}             
+      </ul>
 
-    <div class="carousel-inner">
-      {% for image in images %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-              <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.alt }}">
-              <div class="carousel-caption d-none d-md-block">
-                <h5>{{ image.alt }}</h5>
-                <p>{{ image.caption }}</p>
+      <div class="carousel-inner">
+        {% for image in images %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.alt }}">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>{{ image.alt }}</h5>
+                  <p>{{ image.caption }}</p>
+                </div>
               </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+      </div>
+      <a class="carousel-control-prev"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="prev">
+        <span class="carousel-control-prev-icon"
+          aria-hidden="true">
+        </span>
+      </a>
+      <a class="carousel-control-next"
+      href="#carouselExampleControls"
+      role="button"
+      data-slide="next">
+        <span class="carousel-control-next-icon"
+          aria-hidden="true">
+        </span>
+      </a>
     </div>
-    <a class="carousel-control-prev"
-    href="#carouselExampleControls"
-    role="button"
-    data-slide="prev">
-      <span class="carousel-control-prev-icon"
-        aria-hidden="true">
-      </span>
-    </a>
-    <a class="carousel-control-next"
-    href="#carouselExampleControls"
-    role="button"
-    data-slide="next">
-      <span class="carousel-control-next-icon"
-        aria-hidden="true">
-      </span>
-    </a>
   </div>
-</div>
+{% endif %}
+{% if urls %}
   <br>
-  <h2>Ссылки на разрбор структуры данных:</h2>
+  <h2>Ссылки на разрбор категории:</h2>
         {% for url in urls %}
           <div class="mb-3">
             <a href="{{ url.url }}" target="_blank" class="text-decoration-none">
@@ -62,7 +65,7 @@
             </a>
           </div>
         {% endfor %}
-  
+{% endif %}
   <h1 class="text-center">Алгоритмы</h1>
   {% for algorithm in object_list %}
     <article class="mb-5">  

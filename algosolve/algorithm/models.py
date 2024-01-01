@@ -52,7 +52,7 @@ class Category(BaseModel):
 class Algorithm(BaseModel):
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True
     )
     title = models.CharField(verbose_name='Название', max_length=256)

@@ -11,8 +11,17 @@ h2 {
     border-bottom: 2px solid #336699;
     padding-bottom: 5px;
 }
-
+#carouselExampleControls {
+  margin-left: 50px;
+  margin-right: 50px;
+}
 .carousel-inner img {
   width: 100%;
   height: auto;
+}
+.carousel-control-prev {
+  margin-left: -25px;
+}
+.carousel-control-next {
+  margin-right: -25px;
 }

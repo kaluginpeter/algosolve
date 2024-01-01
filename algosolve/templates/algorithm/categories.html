@@ -3,10 +3,27 @@
   Type of Algorithms
 {% endblock %}
 {% block content %}
-
+{% include "includes/description_algorithms.html" %}
+<div class='container'>
+  <a href='{% url 'algorithm:theory' %}'>
+  <h3>Теория об алгоритмах:</h3>
+  <p>Объяснение терминов: алгоритм, структура данных, сложность алгоритма, нотация Big O</p>
+  </a>
+</div>
+<div class='container'>
+  <a href='{% url 'algorithm:algorithm-in-structure' %}'>
+  <h3>Алгоритмы в структурах данных.</h3>
+  <p>Интеграция алгоритмов в структуры данных для оптимизации работы приложений</p>
+  </a>
+</div>
+<div class='container'>
+  <a href='{% url 'algorithm:optimize-algorithms' %}'>
+  <h3>Оптимизация времени и памяти</h3>
+  <p>Выбор эффективных алгоритмов для оптимизации работы программы.</p>
+  </a>
+</div>
+<h1 class="text-center">Категории алгоритмов:</h1>
   {% for category in object_list %}
-  {% include "includes/description_algorithms.html" %}
-  <h1 class="text-center">Категории алгоритмов</h1>
     <article class="mb-5">  
       {% include "includes/post_card.html" %}
     </article>   

@@ -3,9 +3,9 @@
   Type of Data Structures
 {% endblock %}
 {% block content %}
+{% include "includes/description_data_structure.html" %}
+<h1 class="text-center">Категории Структур Данных</h1>
   {% for category in object_list %}
-  {% include "includes/description_data_structure.html" %}
-  <h1 class="text-center">Категории Структур Данных</h1>
     <article class="mb-5">  
       {% include "includes/post_card.html" %}
     </article>   

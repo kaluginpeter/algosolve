@@ -50,7 +50,7 @@ class CategoryDateStructure(BaseModel):
 class DataStructure(BaseModel):
     category = models.ForeignKey(
         CategoryDateStructure,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True
     )
     title = models.CharField(verbose_name='Название', max_length=256)

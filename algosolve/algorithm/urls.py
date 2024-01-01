@@ -8,6 +8,13 @@ app_name = 'algorithm'
 urlpatterns = [
     path('', views.index, name='index'),
     path('roadmap/', views.RoadMapStaticView.as_view(), name='roadmap'),
+    path('theory/', views.TheoryAlgorithms.as_view(), name='theory'),
+    path(
+        'algorithm_in_structure/', views.AlgorithmInStructure.as_view(),
+        name='algorithm-in-structure'),
+    path(
+        'optimize_algorithms/', views.OptimizeAlgoritm.as_view(),
+        name='optimize-algorithms'),
     path(
         'profile/<slug:username>/',
         views.UserProfileListView.as_view(), name='profile'),
