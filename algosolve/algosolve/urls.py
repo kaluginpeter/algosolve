@@ -15,7 +15,13 @@ urlpatterns = [
         form_class=auth.forms.UserCreationForm,
         success_url=reverse_lazy('algorithm:index')),
         name='registration'),
-    path('pages/', include('pages.urls'))
+    path('pages/', include('pages.urls')),
+    path('api/', include('api.urls')),
+    # Djoser создаст набор необходимых эндпоинтов.
+    # базовые, для управления пользователями в Django:
+    path('auth/', include('djoser.urls')),
+    # JWT-эндпоинты, для управления JWT-токенами:
+    path('auth/', include('djoser.urls.jwt')),
 ]
 
 if settings.DEBUG:

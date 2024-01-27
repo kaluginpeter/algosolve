@@ -1,7 +1,8 @@
 {% if 'algorithms' in request.path %}
+<h2>Комментарии:</h2><br>
   {% if user.is_authenticated %}
     {% load django_bootstrap5 %}
-    <h2>Комментарии:</h2><br>
+    
     <h5 class="mb-4">Оставить комментарий</h5>
     <form method="post" action="{% url 'algorithm:add_comment' algorithm.category.slug algorithm.slug %}#comments_an">
       {% csrf_token %}
@@ -35,9 +36,10 @@
   {% endfor %}
   </div>
 {% elif 'data_structure' in request.path %}
+<h2>Комментарии:</h2><br>
   {% if user.is_authenticated %}
     {% load django_bootstrap5 %}
-    <h2>Комментарии:</h2><br>
+    
     <h5 class="mb-4">Оставить комментарий</h5>
     <form method="post" action="{% url 'data_structure:add_comment' data_structure.category.slug data_structure.slug %}#comments_an">
       {% csrf_token %}

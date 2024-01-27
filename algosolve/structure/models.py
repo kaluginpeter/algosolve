@@ -51,7 +51,8 @@ class DataStructure(BaseModel):
     category = models.ForeignKey(
         CategoryDateStructure,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='data_structures'
     )
     title = models.CharField(verbose_name='Название', max_length=256)
     description = models.TextField(verbose_name='Описание', max_length=10000)
@@ -84,7 +85,8 @@ class DataStructure(BaseModel):
 class ImageDataStructure(BaseModel):
     data_structure = models.ForeignKey(
         DataStructure,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='photo_data_structure'
     )
     image = models.ImageField('Фото', blank=True, upload_to='data_structures_images')
     caption = models.TextField('Описание', blank=True)
@@ -102,7 +104,8 @@ class TaskDataStructure(BaseModel):
     text = models.TextField(verbose_name='Описание задачи')
     data_structure = models.ForeignKey(
         DataStructure,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='task_to_data_structure'
     )
 
     class Meta:
@@ -117,7 +120,8 @@ class UrlDataStructure(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)
     data_structure = models.ForeignKey(
         DataStructure,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='url_to_theory_data_structure'
     )
     url = models.URLField(verbose_name='Ссылка', blank=True)
 
@@ -139,7 +143,7 @@ class CommentDataStructure(models.Model):
         DataStructure,
         on_delete=models.CASCADE,
         verbose_name='Структура данных',
-        related_name='comments_structure_data'
+        related_name='comments'
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

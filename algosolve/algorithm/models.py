@@ -53,6 +53,7 @@ class Algorithm(BaseModel):
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
+        related_name='algorithms',
         null=True
     )
     title = models.CharField(verbose_name='Название', max_length=256)
@@ -86,7 +87,8 @@ class Algorithm(BaseModel):
 class ImageAlgorithm(BaseModel):
     algorithm = models.ForeignKey(
         Algorithm,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='photo_algorithm'
     )
     image = models.ImageField('Фото', blank=True, upload_to='algorithm_images')
     caption = models.TextField('Описание', blank=True)
@@ -104,7 +106,8 @@ class TaskAlgorithm(models.Model):
     text = models.TextField(verbose_name='Описание задачи')
     algorithm = models.ForeignKey(
         Algorithm,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='task_to_algorithm'
     )
 
     class Meta:
@@ -135,7 +138,8 @@ class UrlAlgorithm(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)
     algorithm = models.ForeignKey(
         Algorithm,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='url_to_theory_algorithm'
     )
     url = models.URLField(verbose_name='Ссылка', blank=True)
 
@@ -150,7 +154,8 @@ class UrlTaskAlgorithm(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)
     algorithm = models.ForeignKey(
         Algorithm,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='url_to_online_tasks'
     )
     url = models.URLField(verbose_name='Ссылка', blank=True)
 
