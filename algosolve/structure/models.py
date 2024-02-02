@@ -88,7 +88,9 @@ class ImageDataStructure(BaseModel):
         on_delete=models.CASCADE,
         related_name='photo_data_structure'
     )
-    image = models.ImageField('Фото', blank=True, upload_to='data_structures_images')
+    image = models.ImageField(
+        'Фото', blank=True, upload_to='data_structures_images'
+    )
     caption = models.TextField('Описание', blank=True)
     alt = models.CharField(max_length=255, blank=True)
 
@@ -131,6 +133,7 @@ class UrlDataStructure(BaseModel):
 
     def __str__(self):
         return self.title
+
 
 class CommentDataStructure(models.Model):
     text = models.TextField(verbose_name='Комментарий')

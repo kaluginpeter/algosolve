@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.exceptions import PermissionDenied
@@ -7,11 +7,10 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.hashers import make_password
 
-from algorithm.models import User, Category, Algorithm, Comment
-from structure.models import CategoryDateStructure, DataStructure, CommentDataStructure
+from algorithm.models import User, Category, Algorithm
+from structure.models import CategoryDateStructure, DataStructure
 from . import serializers as api_serialisers
 from .permissions import CutsomBasePermission
-
 
 
 class UserViewSet(ModelViewSet):
@@ -27,7 +26,9 @@ class UserViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            author = get_object_or_404(User, username=self.kwargs.get('username'))
+            author = get_object_or_404(
+                User, username=self.kwargs.get('username')
+            )
             if self.request.user != author:
                 return api_serialisers.UserSerializer
             else:
@@ -36,30 +37,25 @@ class UserViewSet(ModelViewSet):
             return api_serialisers.UserSerializer
         return api_serialisers.FullUserSerializer
 
-
     def perform_update(self, serializer):
         author = get_object_or_404(User, username=self.kwargs.get('username'))
 
         if self.request.user != author:
             raise PermissionDenied("You can't change not own data")
         return super().perform_update(serializer)
-    
+
     def update(self, request, *args, **kwargs):
         user = self.get_object()
         serializer = self.get_serializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-
         if 'password' in request.data:
             password = make_password(request.data.get('password'))
             user.password = password
-        
         self.perform_update(serializer)
-
         return Response(serializer.data)
-    
+
     def perform_destroy(self, instance):
         author = get_object_or_404(User, username=self.kwargs.get('username'))
-
         if self.request.user != author:
             raise PermissionDenied("You can't change not own data")
         return super(UserViewSet, self).perform_destroy(instance)
@@ -80,7 +76,7 @@ class CategoryAlgorithmViewSet(ReadOnlyModelViewSet):
         if self.action == 'list':
             return api_serialisers.CategoryAlgorithmSerializer
         return api_serialisers.FullCategoryAlgorithmSerializer
-    
+
 
 class AlogirthmViewSet(ReadOnlyModelViewSet):
     queryset = Algorithm.objects.all()
@@ -114,22 +110,22 @@ class CommentAlgorithmViewSet(ModelViewSet):
 
     def get_queryset(self):
         return self.get_algorithm_by_slug().comments.all()
-    
+
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user, algorithm=self.get_algorithm_by_slug())
+        serializer.save(
+            author=self.request.user,
+            algorithm=self.get_algorithm_by_slug()
+        )
 
     def perform_update(self, serializer):
         if self.request.user != serializer.instance.author:
             raise PermissionDenied("You can't change not own data")
         return super().perform_update(serializer)
-    
+
     def perform_destroy(self, instance):
         if self.request.user != instance.author:
             raise PermissionDenied("You can't change not own data")
         return super(CommentAlgorithmViewSet, self).perform_destroy(instance)
-
-
-
 
 
 class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
@@ -148,7 +144,7 @@ class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
         if self.action == 'list':
             return api_serialisers.CategoryDataStructureSerializer
         return api_serialisers.FullCategoryDataStructureSerializer
-    
+
 
 class DataStructureViewSet(ReadOnlyModelViewSet):
     queryset = DataStructure.objects.all()
@@ -178,20 +174,27 @@ class CommentDataStructureViewSet(ModelViewSet):
     ordering = ('created_at',)
 
     def get_data_structure_by_slug(self):
-        return get_object_or_404(DataStructure, slug=self.kwargs.get('data_structure_slug'))
+        return get_object_or_404(
+            DataStructure, slug=self.kwargs.get('data_structure_slug')
+        )
 
     def get_queryset(self):
         return self.get_data_structure_by_slug().comments.all()
-    
+
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user, data_structure=self.get_data_structure_by_slug())
+        serializer.save(
+            author=self.request.user,
+            data_structure=self.get_data_structure_by_slug()
+        )
 
     def perform_update(self, serializer):
         if self.request.user != serializer.instance.author:
             raise PermissionDenied("You can't change not own data")
         return super().perform_update(serializer)
-    
+
     def perform_destroy(self, instance):
         if self.request.user != instance.author:
             raise PermissionDenied("You can't change not own data")
-        return super(CommentDataStructureViewSet, self).perform_destroy(instance)
+        return super(
+            CommentDataStructureViewSet, self
+        ).perform_destroy(instance)
