@@ -11,7 +11,7 @@ class FullUserSerializer(ModelSerializer):
         fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
 
-class UserSerializer(ModelSerializer):
+class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = algorithm_models.User
         fields = ('username', 'first_name', 'last_name', )

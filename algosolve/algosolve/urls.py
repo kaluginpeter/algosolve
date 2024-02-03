@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.views.generic.edit import CreateView
 
 from . import settings
+from api.yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('', include('algorithm.urls')),
@@ -23,6 +24,8 @@ urlpatterns = [
     # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
 ]
+
+urlpatterns += doc_urls
 
 if settings.DEBUG:
     urlpatterns += static(

@@ -26,15 +26,13 @@ class UserViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            author = get_object_or_404(
-                User, username=self.kwargs.get('username')
-            )
+            author = User.objects.get(username=self.kwargs.get('username'))
             if self.request.user != author:
-                return api_serialisers.UserSerializer
+                return api_serialisers.CustomUserSerializer
             else:
                 return api_serialisers.FullUserSerializer
         if self.action == 'list':
-            return api_serialisers.UserSerializer
+            return api_serialisers.CustomUserSerializer
         return api_serialisers.FullUserSerializer
 
     def perform_update(self, serializer):
