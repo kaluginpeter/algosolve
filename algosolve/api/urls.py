@@ -21,19 +21,19 @@ router.register(r'^profile', views.UserViewSet, basename='profile')
 router.register(
     'algorithms/categories',
     views.CategoryAlgorithmViewSet,
-    basename='categories'
+    basename='algorithm_categories'
 )
 router.register(r'algorithms', views.AlogirthmViewSet, 'algorithms')
 router.register(
-    r'algorithms/(?P<post_slug>[-\w]+)/comments',
+    r'algorithms/(?P<algorithm_slug>[-\w]+)/comments',
     views.CommentAlgorithmViewSet,
-    basename='comments'
+    basename='algorithm_comments'
 )
 
 router.register(
     'data_structures/categories',
     views.CategoryDataStructureViewSet,
-    basename='categories'
+    basename='data_structure_categories'
 )
 router.register(
     r'data_structures',
@@ -43,7 +43,7 @@ router.register(
 router.register(
     r'data_structures/(?P<data_structure_slug>[-\w]+)/comments',
     views.CommentDataStructureViewSet,
-    basename='comments'
+    basename='data_structures_comments'
 )
 
 urlpatterns = [

@@ -14,6 +14,14 @@ from .permissions import CutsomBasePermission
 
 
 class UserViewSet(ModelViewSet):
+    """
+    This endpoint return information about users.
+    Available queries:
+    GET (without username) - return list of all existing users.
+    GET (with username in path) - return detail information about current user.
+    Also you can perform all CRUD methods,
+    like POST, PUT, PATCH, DELETE
+    """
     queryset = User.objects.all()
     serializer_class = api_serialisers.FullUserSerializer
     lookup_field = 'username'
@@ -60,6 +68,13 @@ class UserViewSet(ModelViewSet):
 
 
 class CategoryAlgorithmViewSet(ReadOnlyModelViewSet):
+    """
+    This endpoints give all information about categories of algorithms.
+    Available queries:
+    GET (without slug of category) - return list of all categories algorithms.
+    GET (with slug in path) - return detail about current category.
+    And in this endpoint you can't perform any of CRUD actions.
+    """
     queryset = Category.objects.all()
     serializer_class = api_serialisers.CategoryAlgorithmSerializer
     lookup_field = 'slug'
@@ -77,6 +92,13 @@ class CategoryAlgorithmViewSet(ReadOnlyModelViewSet):
 
 
 class AlogirthmViewSet(ReadOnlyModelViewSet):
+    """
+    This endpoint return data about algorithms.
+    Available queries:
+    GET (without slug in path) - return list of all algorithms.
+    GET (with slug in path) - return detail about alogrithm.
+    Also you can't user any of CRUD actions here.
+    """
     queryset = Algorithm.objects.all()
     serializer_class = api_serialisers.AlgorithmSerializer
     lookup_field = 'slug'
@@ -94,6 +116,13 @@ class AlogirthmViewSet(ReadOnlyModelViewSet):
 
 
 class CommentAlgorithmViewSet(ModelViewSet):
+    """
+    This end point return datas about comments in algorithm.
+    Available queries:
+    GET (without id_comment in path) - return all comments
+    under current algorithm. You can use all of CRUD action,
+    just describe id current comment in path (exclude POST method).
+    """
     serializer_class = api_serialisers.CommentAlgorithmSerializer
     lookup_field = 'id'
     permission_classes = (CutsomBasePermission,)
@@ -104,7 +133,9 @@ class CommentAlgorithmViewSet(ModelViewSet):
     ordering = ('created_at',)
 
     def get_algorithm_by_slug(self):
-        return get_object_or_404(Algorithm, slug=self.kwargs.get('post_slug'))
+        return get_object_or_404(
+            Algorithm, slug=self.kwargs.get('algorithm_slug')
+        )
 
     def get_queryset(self):
         return self.get_algorithm_by_slug().comments.all()
@@ -127,6 +158,14 @@ class CommentAlgorithmViewSet(ModelViewSet):
 
 
 class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
+    """
+    This endpoints give all information about categories of data structures.
+    Available queries:
+    GET (without slug of category) - return list
+    of all categories data structures.
+    GET (with slug in path) - return detail about current category.
+    And in this endpoint you can't perform any of CRUD actions.
+    """
     queryset = CategoryDateStructure.objects.all()
     serializer_class = api_serialisers.CategoryDataStructureSerializer
     lookup_field = 'slug'
@@ -145,6 +184,13 @@ class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
 
 
 class DataStructureViewSet(ReadOnlyModelViewSet):
+    """
+    This endpoint return data about data structures.
+    Available queries:
+    GET (without slug in path) - return list of all data structures.
+    GET (with slug in path) - return detail about data structure.
+    Also you can't user any of CRUD actions here.
+    """
     queryset = DataStructure.objects.all()
     serializer_class = api_serialisers.DataStructureSerializer
     lookup_field = 'slug'
@@ -162,6 +208,13 @@ class DataStructureViewSet(ReadOnlyModelViewSet):
 
 
 class CommentDataStructureViewSet(ModelViewSet):
+    """
+    This end point return datas about comments in data structure.
+    Available queries:
+    GET (without id_comment in path) - return all comments
+    under current data structure. You can use all of CRUD action,
+    just describe id current comment in path (exclude POST method).
+    """
     serializer_class = api_serialisers.CommentDataStructureSerializer
     lookup_field = 'id'
     permission_classes = (CutsomBasePermission,)
