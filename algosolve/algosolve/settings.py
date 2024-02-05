@@ -160,4 +160,6 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     'https://localhost:3000',
+    'www.algosolve.pythonanywhere.com',
+    'algosolve.pythonanywhere.com',
 ]
