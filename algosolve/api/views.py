@@ -7,10 +7,10 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.hashers import make_password
 
-from algorithm.models import User, Category, Algorithm
-from structure.models import CategoryDateStructure, DataStructure
+from algorithm.models import User, Category, Algorithm, Comment
+from structure.models import CategoryDateStructure, DataStructure, CommentDataStructure
 from . import serializers as api_serialisers
-from .permissions import CutsomBasePermission
+from .permissions import CutsomBasePermission, ProfilePermission
 
 
 class UserViewSet(ModelViewSet):
@@ -22,7 +22,7 @@ class UserViewSet(ModelViewSet):
     Also you can perform all CRUD methods,
     like POST, PUT, PATCH, DELETE
     """
-    queryset = User.objects.all()
+    permission_classes = (ProfilePermission,)
     serializer_class = api_serialisers.FullUserSerializer
     lookup_field = 'username'
     throttle_scope = 'for_data_user_profiles'
@@ -32,7 +32,14 @@ class UserViewSet(ModelViewSet):
     search_fields = ('$username', '$first_name', '$email', '$last_name')
     ordering = ('created_at',)
 
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return User.objects.none()
+        return User.objects.all()
+
     def get_serializer_class(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return api_serialisers.FullUserSerializer
         if self.action == 'retrieve':
             author = User.objects.get(username=self.kwargs.get('username'))
             if self.request.user != author:
@@ -49,16 +56,6 @@ class UserViewSet(ModelViewSet):
         if self.request.user != author:
             raise PermissionDenied("You can't change not own data")
         return super().perform_update(serializer)
-
-    def update(self, request, *args, **kwargs):
-        user = self.get_object()
-        serializer = self.get_serializer(user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        if 'password' in request.data:
-            password = make_password(request.data.get('password'))
-            user.password = password
-        self.perform_update(serializer)
-        return Response(serializer.data)
 
     def perform_destroy(self, instance):
         author = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -138,6 +135,8 @@ class CommentAlgorithmViewSet(ModelViewSet):
         )
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Comment.objects.all()
         return self.get_algorithm_by_slug().comments.all()
 
     def perform_create(self, serializer):
@@ -230,6 +229,8 @@ class CommentDataStructureViewSet(ModelViewSet):
         )
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return CommentDataStructure.objects.all()
         return self.get_data_structure_by_slug().comments.all()
 
     def perform_create(self, serializer):
