@@ -17,7 +17,7 @@ class UserRouter(DefaultRouter):
 
 
 router = UserRouter()
-router.register(r'^profile', views.UserViewSet, basename='profile')
+router.register(r'profile', views.UserViewSet, basename='profile')
 router.register(
     'algorithms/categories',
     views.CategoryAlgorithmViewSet,

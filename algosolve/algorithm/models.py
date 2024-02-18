@@ -48,7 +48,6 @@ class Category(BaseModel):
         super().save(*args, **kwargs)
 
 
-
 class Algorithm(BaseModel):
     category = models.ForeignKey(
         Category,
@@ -149,6 +148,7 @@ class UrlAlgorithm(BaseModel):
 
     def __str__(self):
         return self.title
+
 
 class UrlTaskAlgorithm(BaseModel):
     title = models.CharField(verbose_name='Название', max_length=256)
