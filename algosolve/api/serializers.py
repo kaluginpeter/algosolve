@@ -229,7 +229,7 @@ class UrlToTheoryDataStructureSerializer(ModelSerializer):
             'data_structure', 'title', 'url'
         )
 
-    def get_data_structures(self, obj):
+    def get_data_structure(self, obj):
         return obj.data_structure.slug
 
 
@@ -254,7 +254,7 @@ class ImageToDataStructureSerializer(ModelSerializer):
             'data_structure', 'image', 'caption', 'alt'
         )
 
-    def get_algorithm(self, obj):
+    def get_data_structure(self, obj):
         return obj.data_structure.slug
 
 
@@ -269,7 +269,7 @@ class CommentToDataStructureSerializer(ModelSerializer):
             'text', 'created_at'
         )
 
-    def get_algorithm(self, obj):
+    def get_data_structure(self, obj):
         return obj.data_structure.slug
 
     def get_author(self, obj):

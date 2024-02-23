@@ -1,7 +1,9 @@
 from django.contrib import admin, auth
+from django.conf import settings
 from django.urls import path, include, reverse_lazy
 from django.conf.urls.static import static
 from django.views.generic.edit import CreateView
+from graphene_django.views import GraphQLView
 
 from . import settings
 from api.yasg import urlpatterns as doc_urls
@@ -23,14 +25,23 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
+    path('graphql/', GraphQLView.as_view(graphiql=True))
 ]
 
 urlpatterns += doc_urls
 
 if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+
+if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+
 
 handler404 = 'pages.views.page_not_found'
 

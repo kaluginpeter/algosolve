@@ -65,7 +65,7 @@ class DataStructureDetailView(DetailView):
         context['tasks'] = TaskDataStructure.objects.filter(data_structure=self._data_structure.pk)
         context['form'] = CommentForm()
         context['comments'] = (
-            self.object.comments_structure_data.select_related('data_structure', 'author')
+            self.object.comments.select_related('data_structure', 'author')
         )
         context['data_structure'] = self.object
         return context

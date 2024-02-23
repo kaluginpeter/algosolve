@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-
+from django.db.models import Prefetch
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -7,8 +7,10 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.hashers import make_password
 
-from algorithm.models import User, Category, Algorithm, Comment
-from structure.models import CategoryDateStructure, DataStructure, CommentDataStructure
+from algorithm.models import User, Algorithm, Comment
+from structure import models as structure_models
+from algorithm import models as algorithm_models
+from structure.models import DataStructure, CommentDataStructure
 from . import serializers as api_serialisers
 from .permissions import CutsomBasePermission, ProfilePermission
 
@@ -72,7 +74,6 @@ class CategoryAlgorithmViewSet(ReadOnlyModelViewSet):
     GET (with slug in path) - return detail about current category.
     And in this endpoint you can't perform any of CRUD actions.
     """
-    queryset = Category.objects.all()
     serializer_class = api_serialisers.CategoryAlgorithmSerializer
     lookup_field = 'slug'
     permission_classes = (CutsomBasePermission,)
@@ -87,6 +88,11 @@ class CategoryAlgorithmViewSet(ReadOnlyModelViewSet):
             return api_serialisers.CategoryAlgorithmSerializer
         return api_serialisers.FullCategoryAlgorithmSerializer
 
+    def get_queryset(self):
+        new_queryset = algorithm_models.Category.objects.all() \
+            .prefetch_related('algorithms')
+        return new_queryset
+
 
 class AlogirthmViewSet(ReadOnlyModelViewSet):
     """
@@ -96,7 +102,6 @@ class AlogirthmViewSet(ReadOnlyModelViewSet):
     GET (with slug in path) - return detail about alogrithm.
     Also you can't user any of CRUD actions here.
     """
-    queryset = Algorithm.objects.all()
     serializer_class = api_serialisers.AlgorithmSerializer
     lookup_field = 'slug'
     permission_classes = (CutsomBasePermission,)
@@ -110,6 +115,15 @@ class AlogirthmViewSet(ReadOnlyModelViewSet):
         if self.action == 'retrieve':
             return api_serialisers.FullAlgorithmSerializer
         return api_serialisers.AlgorithmSerializer
+
+    def get_queryset(self):
+        new_queryset = Algorithm.objects.all().select_related('category') \
+            .prefetch_related(
+                'photo_algorithm', 'task_to_algorithm',
+                'url_to_theory_algorithm',
+                'url_to_online_tasks', 'comments', 'comments__author'
+            )
+        return new_queryset
 
 
 class CommentAlgorithmViewSet(ModelViewSet):
@@ -137,7 +151,9 @@ class CommentAlgorithmViewSet(ModelViewSet):
     def get_queryset(self):
         if getattr(self, 'swagger_fake_view', False):
             return Comment.objects.all()
-        return self.get_algorithm_by_slug().comments.all()
+        return Comment.objects.filter(
+            algorithm__slug=self.kwargs.get('algorithm_slug')
+            ).select_related('algorithm', 'author')
 
     def perform_create(self, serializer):
         serializer.save(
@@ -165,7 +181,6 @@ class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
     GET (with slug in path) - return detail about current category.
     And in this endpoint you can't perform any of CRUD actions.
     """
-    queryset = CategoryDateStructure.objects.all()
     serializer_class = api_serialisers.CategoryDataStructureSerializer
     lookup_field = 'slug'
     permission_classes = (CutsomBasePermission,)
@@ -181,6 +196,11 @@ class CategoryDataStructureViewSet(ReadOnlyModelViewSet):
             return api_serialisers.CategoryDataStructureSerializer
         return api_serialisers.FullCategoryDataStructureSerializer
 
+    def get_queryset(self):
+        new_queryset = structure_models.CategoryDateStructure.objects.all() \
+            .prefetch_related('data_structures')
+        return new_queryset
+
 
 class DataStructureViewSet(ReadOnlyModelViewSet):
     """
@@ -190,7 +210,6 @@ class DataStructureViewSet(ReadOnlyModelViewSet):
     GET (with slug in path) - return detail about data structure.
     Also you can't user any of CRUD actions here.
     """
-    queryset = DataStructure.objects.all()
     serializer_class = api_serialisers.DataStructureSerializer
     lookup_field = 'slug'
     permission_classes = (CutsomBasePermission,)
@@ -204,6 +223,14 @@ class DataStructureViewSet(ReadOnlyModelViewSet):
         if self.action == 'retrieve':
             return api_serialisers.FullDataStructureSerializer
         return api_serialisers.DataStructureSerializer
+
+    def get_queryset(self):
+        new_queryset = structure_models.DataStructure.objects.all() \
+            .select_related('category').prefetch_related(
+            'photo_data_structure', 'task_to_data_structure',
+            'url_to_theory_data_structure', 'comments', 'comments__author'
+        )
+        return new_queryset
 
 
 class CommentDataStructureViewSet(ModelViewSet):
@@ -231,7 +258,9 @@ class CommentDataStructureViewSet(ModelViewSet):
     def get_queryset(self):
         if getattr(self, 'swagger_fake_view', False):
             return CommentDataStructure.objects.all()
-        return self.get_data_structure_by_slug().comments.all()
+        return structure_models.CommentDataStructure.objects.filter(
+            data_structure__slug=self.kwargs.get('data_structure_slug')
+            ).select_related('author', 'data_structure')
 
     def perform_create(self, serializer):
         serializer.save(

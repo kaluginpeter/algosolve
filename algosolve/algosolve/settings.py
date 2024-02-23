@@ -15,6 +15,10 @@ ALLOWED_HOSTS = [
     'algosolve.pythonanywhere.com',
 ]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'rest_framework',
     'djoser',
     'algorithm',
@@ -33,6 +38,8 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'corsheaders',
+    'graphene_django',
+    'graphql_backend'
 ]
 
 MIDDLEWARE = [
@@ -40,6 +47,8 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar_force.middleware.ForceDebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -98,7 +107,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -162,3 +171,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://localhost:3000',
     'https://algosolve.pythonanywhere.com',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'graphql_backend.schema.schema'
+}
