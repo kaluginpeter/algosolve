@@ -220,4 +220,229 @@ class Query(graphene.ObjectType):
             return None
 
 
-schema = graphene.Schema(query=Query)
+class CreateCommentAlgorithmMutation(graphene.Mutation):
+    class Arguments:
+        algorithm_slug = graphene.String()
+        author = graphene.String()
+        text = graphene.String()
+
+    created_comment_algorithm = graphene.Field(CommentAlgorithmType)
+    ok = graphene.Boolean(required=True)
+    errors = graphene.List(graphene.String, required=True)
+
+    @classmethod
+    def mutate(cls, info, root, algorithm_slug, author, text):
+        try:
+            algorithm = algorithm_models.Algorithm.objects.get(
+                slug=algorithm_slug
+            )
+        except algorithm_models.Algorithm.DoesNotExist:
+            return CreateCommentAlgorithmMutation(
+                ok=False, errors=['algorithm does not exist']
+            )
+        try:
+            user = algorithm_models.User.objects.get(username=author)
+        except algorithm_models.User.DoesNotExist:
+            return CreateCommentAlgorithmMutation(
+                ok=False, errors=['user not exist']
+            )
+        if len(text) < 2:
+            return CreateCommentAlgorithmMutation(
+                ok=False, errors=['text of comment should be greater than 1']
+            )
+        comment = algorithm_models.Comment(
+            algorithm=algorithm, author=user, text=text
+        )
+        comment.save()
+        return CreateCommentAlgorithmMutation(
+            created_comment_algorithm=comment, ok=True, errors=[]
+        )
+
+
+class UpdateCommentAlgorithmMutation(graphene.Mutation):
+    class Arguments:
+        algorithm_slug = graphene.String()
+        comment_id = graphene.ID()
+        author = graphene.String()
+        text = graphene.String()
+
+    updated_comment_algorithm = graphene.Field(CommentAlgorithmType)
+    ok = graphene.Boolean(required=True)
+    errors = graphene.List(graphene.String, required=True)
+
+    @classmethod
+    def mutate(cls, info, root, algorithm_slug, author, text, comment_id):
+        try:
+            algorithm = algorithm_models.Algorithm.objects.get(
+                slug=algorithm_slug
+            )
+        except algorithm_models.Algorithm.DoesNotExist:
+            return UpdateCommentAlgorithmMutation(
+                ok=False, errors=['algorithm does not exist']
+            )
+        try:
+            comment = algorithm_models.Comment.objects.get(id=comment_id)
+        except algorithm_models.Comment.DoesNotExist:
+            return UpdateCommentAlgorithmMutation(
+                ok=False, errors=['comment not exist']
+            )
+        if len(text) < 2:
+            return UpdateCommentAlgorithmMutation(
+                ok=False, errors=['text of comment should be greater than 1']
+            )
+        comment.text = text
+        comment.save()
+        return UpdateCommentAlgorithmMutation(
+            updated_comment_algorithm=comment, ok=True, errors=[]
+        )
+
+
+class DeleteCommentAlgorithmMutation(graphene.Mutation):
+    class Arguments:
+        algorithm_slug = graphene.String()
+        comment_id = graphene.ID()
+        author = graphene.String()
+
+    deleted_comment_algorithm = graphene.Field(CommentAlgorithmType)
+    ok = graphene.Boolean(required=True)
+    errors = graphene.List(graphene.String, required=True)
+
+    @classmethod
+    def mutate(cls, info, root, algorithm_slug, author, comment_id):
+        try:
+            algorithm = algorithm_models.Algorithm.objects.get(
+                slug=algorithm_slug
+            )
+        except algorithm_models.Algorithm.DoesNotExist:
+            return DeleteCommentAlgorithmMutation(
+                ok=False, errors=['algorithm does not exist']
+            )
+        try:
+            comment = algorithm_models.Comment.objects.get(id=comment_id)
+        except algorithm_models.Comment.DoesNotExist:
+            return DeleteCommentAlgorithmMutation(
+                ok=False, errors=['comment not exist']
+            )
+        comment.delete()
+        return DeleteCommentAlgorithmMutation(
+            deleted_comment_algorithm=comment, ok=True, errors=[]
+        )
+
+
+class CreateCommentDataStructureMutation(graphene.Mutation):
+    class Arguments:
+        data_structure_slug = graphene.String()
+        author = graphene.String()
+        text = graphene.String()
+
+    created_comment_data_structure = graphene.Field(CommentDataStructureType)
+
+    @classmethod
+    def mutate(cls, root, info, data_structure_slug, author, text):
+        try:
+            data_structure = structure_models.DataStructure.objects.get(
+                slug=data_structure_slug
+            )
+        except structure_models.DataStructure.DoesNotExist:
+            return CreateCommentDataStructureMutation(
+                ok=False, errors=['data_structure not exist']
+            )
+        try:
+            user = algorithm_models.User.objects.get(username=author)
+        except algorithm_models.User.DoesNotExist:
+            return CreateCommentDataStructureMutation(
+                ok=False, errors=['user not exist']
+            )
+        comment = structure_models.CommentDataStructure(
+            data_structure=data_structure, author=user, text=text
+        )
+        comment.save()
+        return CreateCommentDataStructureMutation(
+            created_comment_data_structure=comment
+        )
+
+
+class UpdateCommentDataStructureMutation(graphene.Mutation):
+    class Arguments:
+        data_structure_slug = graphene.String()
+        comment_id = graphene.ID()
+        author = graphene.String()
+        text = graphene.String()
+
+    updated_comment_data_structure = graphene.Field(CommentDataStructureType)
+    ok = graphene.Boolean(required=True)
+    errors = graphene.List(graphene.String, required=True)
+
+    @classmethod
+    def mutate(cls, info, root, data_structure_slug, author, text, comment_id):
+        try:
+            data_structure = structure_models.DataStructure.objects.get(
+                slug=data_structure_slug
+            )
+        except structure_models.DataStructure.DoesNotExist:
+            return UpdateCommentDataStructureMutation(
+                ok=False, errors=['data structure does not exist']
+            )
+        try:
+            comment = structure_models.CommentDataStructure.objects.get(
+                id=comment_id
+            )
+        except structure_models.CommentDataStructure.DoesNotExist:
+            return UpdateCommentDataStructureMutation(
+                ok=False, errors=['comment not exist']
+            )
+        if len(text) < 2:
+            return UpdateCommentDataStructureMutation(
+                ok=False, errors=['text of comment should be greater than 1']
+            )
+        comment.text = text
+        comment.save()
+        return UpdateCommentDataStructureMutation(
+            updated_comment_data_structure=comment, ok=True, errors=[]
+        )
+
+
+class DeleteCommentDataStructureMutation(graphene.Mutation):
+    class Arguments:
+        data_structure_slug = graphene.String()
+        comment_id = graphene.ID()
+        author = graphene.String()
+
+    deleted_comment_data_structure = graphene.Field(CommentDataStructureType)
+    ok = graphene.Boolean(required=True)
+    errors = graphene.List(graphene.String, required=True)
+
+    @classmethod
+    def mutate(cls, info, root, data_structure_slug, author, comment_id):
+        try:
+            data_stucture = structure_models.DataStructure.objects.get(
+                slug=data_structure_slug
+            )
+        except structure_models.DataStructure.DoesNotExist:
+            return DeleteCommentDataStructureMutation(
+                ok=False, errors=['data structure does not exist']
+            )
+        try:
+            comment = structure_models.CommentDataStructure.objects.get(
+                id=comment_id
+            )
+        except structure_models.CommentDataStructure.DoesNotExist:
+            return DeleteCommentDataStructureMutation(
+                ok=False, errors=['comment not exist']
+            )
+        comment.delete()
+        return DeleteCommentDataStructureMutation(
+            deleted_comment_data_structure=comment, ok=True, errors=[]
+        )
+
+
+class Mutation(graphene.ObjectType):
+    add_comment_in_algorithm = CreateCommentAlgorithmMutation.Field()
+    add_comment_in_data_structure = CreateCommentDataStructureMutation.Field()
+    update_comment_in_algorithm = UpdateCommentAlgorithmMutation.Field()
+    delete_comment_in_algorithm = DeleteCommentAlgorithmMutation.Field()
+    update_comment_in_data_structure = UpdateCommentDataStructureMutation.Field()
+    delete_comment_in_data_structure = DeleteCommentDataStructureMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
