@@ -254,10 +254,10 @@ class CreateCommentAlgorithmMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, info, root, algorithm_slug, author, text):
-        if not root.context.user.is_authenticated:
-            return CreateCommentAlgorithmMutation(
-                ok=False, errors=['Authorize before creation comment']
-            )
+        # if not root.context.user.is_authenticated:
+        #     return CreateCommentAlgorithmMutation(
+        #         ok=False, errors=['Authorize before creation comment']
+        #     )
         try:
             algorithm = algorithm_models.Algorithm.objects.get(
                 slug=algorithm_slug
@@ -373,10 +373,11 @@ class CreateCommentDataStructureMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, data_structure_slug, author, text):
-        if not root.context.user.is_authenticated:
-            return CreateCommentDataStructureMutation(
-                ok=False, errors=['Authorize before creation comment']
-            )
+        # Should use header in graphql insomnia API
+        # if not root.context.user.is_authenticated:
+        #     return CreateCommentDataStructureMutation(
+        #         ok=False, errors=['Authorize before creation comment']
+        #     )
         try:
             data_structure = structure_models.DataStructure.objects.get(
                 slug=data_structure_slug
