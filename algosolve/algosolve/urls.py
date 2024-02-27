@@ -2,6 +2,7 @@ from django.contrib import admin, auth
 from django.conf import settings
 from django.urls import path, include, reverse_lazy
 from django.conf.urls.static import static
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import CreateView
 from graphene_django.views import GraphQLView
 
@@ -25,7 +26,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     # JWT-эндпоинты, для управления JWT-токенами:
     path('auth/', include('djoser.urls.jwt')),
-    path('graphql/', GraphQLView.as_view(graphiql=True))
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)))
 ]
 
 urlpatterns += doc_urls

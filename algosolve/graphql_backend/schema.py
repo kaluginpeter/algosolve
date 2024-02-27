@@ -1,5 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
+from  graphql_auth import mutations
+from graphql_auth.schema import UserQuery, MeQuery
 
 from algorithm import models as algorithm_models
 from structure import models as structure_models
@@ -106,7 +108,7 @@ class CommentDataStructureType(DjangoObjectType):
         fields = ('id', 'text', 'author', 'data_structure', 'created_at')
 
 
-class Query(graphene.ObjectType):
+class Query(UserQuery, MeQuery, graphene.ObjectType):
     all_categories_algorithms = graphene.List(CategoryAlgorithmType)
     all_categories_data_structures = graphene.List(CategoryDataStructureType)
     category_algorithm_by_slug = graphene.Field(
@@ -220,6 +222,26 @@ class Query(graphene.ObjectType):
             return None
 
 
+class AuthMutation(graphene.ObjectType):
+    register = mutations.Register.Field()
+    verify_account = mutations.VerifyAccount.Field()
+    resend_activation_email = mutations.ResendActivationEmail.Field()
+    send_password_reset_email = mutations.SendPasswordResetEmail.Field()
+    password_reset = mutations.PasswordReset.Field()
+    password_change = mutations.PasswordChange.Field()
+    archive_account = mutations.ArchiveAccount.Field()
+    delete_account = mutations.DeleteAccount.Field()
+    update_account = mutations.UpdateAccount.Field()
+    send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()
+    verify_secondary_email = mutations.VerifySecondaryEmail.Field()
+    swap_emails = mutations.SwapEmails.Field()
+
+    token_auth = mutations.ObtainJSONWebToken.Field()
+    verify_token = mutations.VerifyToken.Field()
+    refresh_token = mutations.RefreshToken.Field()
+    revoke_token = mutations.RevokeToken.Field()
+
+
 class CreateCommentAlgorithmMutation(graphene.Mutation):
     class Arguments:
         algorithm_slug = graphene.String()
@@ -232,6 +254,10 @@ class CreateCommentAlgorithmMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, info, root, algorithm_slug, author, text):
+        if not root.context.user.is_authenticated:
+            return CreateCommentAlgorithmMutation(
+                ok=False, errors=['Authorize before creation comment']
+            )
         try:
             algorithm = algorithm_models.Algorithm.objects.get(
                 slug=algorithm_slug
@@ -286,6 +312,10 @@ class UpdateCommentAlgorithmMutation(graphene.Mutation):
             return UpdateCommentAlgorithmMutation(
                 ok=False, errors=['comment not exist']
             )
+        if root.context.user != comment.author:
+            return UpdateCommentAlgorithmMutation(
+                ok=False, errors=['U cant change not own data']
+            )
         if len(text) < 2:
             return UpdateCommentAlgorithmMutation(
                 ok=False, errors=['text of comment should be greater than 1']
@@ -323,6 +353,10 @@ class DeleteCommentAlgorithmMutation(graphene.Mutation):
             return DeleteCommentAlgorithmMutation(
                 ok=False, errors=['comment not exist']
             )
+        if root.context.user != comment.author:
+            return DeleteCommentAlgorithmMutation(
+                ok=False, errors=['U cant change not own data']
+            )
         comment.delete()
         return DeleteCommentAlgorithmMutation(
             deleted_comment_algorithm=comment, ok=True, errors=[]
@@ -339,6 +373,10 @@ class CreateCommentDataStructureMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, data_structure_slug, author, text):
+        if not root.context.user.is_authenticated:
+            return CreateCommentDataStructureMutation(
+                ok=False, errors=['Authorize before creation comment']
+            )
         try:
             data_structure = structure_models.DataStructure.objects.get(
                 slug=data_structure_slug
@@ -391,6 +429,10 @@ class UpdateCommentDataStructureMutation(graphene.Mutation):
             return UpdateCommentDataStructureMutation(
                 ok=False, errors=['comment not exist']
             )
+        if root.context.user != comment.author:
+            return UpdateCommentDataStructureMutation(
+                ok=False, errors=['U cant change not own data']
+            )
         if len(text) < 2:
             return UpdateCommentDataStructureMutation(
                 ok=False, errors=['text of comment should be greater than 1']
@@ -430,13 +472,17 @@ class DeleteCommentDataStructureMutation(graphene.Mutation):
             return DeleteCommentDataStructureMutation(
                 ok=False, errors=['comment not exist']
             )
+        if root.context.user != comment.author:
+            return DeleteCommentDataStructureMutation(
+                ok=False, errors=['U cant change not own data']
+            )
         comment.delete()
         return DeleteCommentDataStructureMutation(
             deleted_comment_data_structure=comment, ok=True, errors=[]
         )
 
 
-class Mutation(graphene.ObjectType):
+class Mutation(AuthMutation, graphene.ObjectType):
     add_comment_in_algorithm = CreateCommentAlgorithmMutation.Field()
     add_comment_in_data_structure = CreateCommentDataStructureMutation.Field()
     update_comment_in_algorithm = UpdateCommentAlgorithmMutation.Field()
